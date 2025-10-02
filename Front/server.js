@@ -7,28 +7,24 @@ const app = express();
 const PORT = 3000;
 const BACKEND_URL = 'http://localhost:8080';
 
-// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname)); // Servir archivos desde la raíz
+app.use(express.static(__dirname));
 
-// Ruta principal
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Ruta para favicon (evitar error 404)
 app.get('/favicon.ico', (req, res) => {
     res.status(204).end();
 });
 
-// Proxy para el backend - CORREGIDO
 app.use('/proxy/api', async (req, res) => {
     try {
         const backendPath = req.originalUrl.replace('/proxy/api/cajero', '/api/cajero');
         const url = `${BACKEND_URL}${backendPath}`;
         
-        console.log('🔗 Conectando con backend:', url);
+        console.log('Conectando con backend:', url);
         
         const fetchOptions = {
             method: req.method,
@@ -37,7 +33,6 @@ app.use('/proxy/api', async (req, res) => {
             }
         };
 
-        // Solo agregar body para métodos que lo necesitan
         if (req.method !== 'GET' && req.method !== 'HEAD') {
             fetchOptions.body = JSON.stringify(req.body);
         }
@@ -52,7 +47,7 @@ app.use('/proxy/api', async (req, res) => {
         res.json(data);
         
     } catch (error) {
-        console.error('❌ Error de conexión:', error.message);
+        console.error('Error de conexión:', error.message);
         res.status(500).json({ 
             exito: false,
             mensaje: 'No se puede conectar con el servidor backend',
@@ -62,23 +57,23 @@ app.use('/proxy/api', async (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log('🚀 SERVICIO CAJERO AUTOMÁTICO');
+    console.log('SERVICIO CAJERO AUTOMÁTICO');
     console.log('==============================');
-    console.log(`📍 Frontend: http://localhost:${PORT}`);
-    console.log(`📡 Backend: ${BACKEND_URL}`);
-    console.log('✅ Servidor listo!');
+    console.log(`Frontend: http://localhost:${PORT}`);
+    console.log(`Backend: ${BACKEND_URL}`);
+    console.log('Servidor listo!');
     
     // Verificación automática
-    console.log('\n🔍 Verificando conexión con backend...');
+    console.log('\nVerificando conexión con backend...');
     fetch(`${BACKEND_URL}/api/cajero/estado`)
         .then(response => {
             if (response.ok) {
-                console.log('✅ Backend conectado correctamente');
+                console.log('Backend conectado correctamente');
             } else {
-                console.log('❌ Backend no responde correctamente');
+                console.log('Backend no responde correctamente');
             }
         })
         .catch(error => {
-            console.log('❌ No se puede conectar al backend:', error.message);
+            console.log('No se puede conectar al backend:', error.message);
         });
 });

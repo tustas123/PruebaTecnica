@@ -1,87 +1,67 @@
 class CajeroApp {
     constructor() {
-        this.apiUrl = '/proxy/api/cajero'; // URL relativa al proxy
+        this.apiUrl = '/proxy/api/cajero';
         this.init();
     }
 
     init() {
-        console.log('🔄 Iniciando aplicación cajero...');
-        this.cargarEstadoCajero();
+        console.log('Iniciando aplicación cajero');
+        this.cargarTotalDisponible();
         this.setupEventListeners();
-        
-        // Actualizar cada 30 segundos
-        setInterval(() => this.cargarEstadoCajero(), 30000);
+        setInterval(() => this.cargarTotalDisponible(), 30000);
     }
 
     setupEventListeners() {
         document.getElementById('btnRetirar').addEventListener('click', () => this.realizarRetiro());
         document.getElementById('btnCerrarResultado').addEventListener('click', () => this.limpiarResultado());
-        
         document.getElementById('monto').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.realizarRetiro();
         });
     }
 
-    async cargarEstadoCajero() {
-        try {
-            console.log('📊 Cargando estado del cajero...');
-            
-            const [estadoResponse, totalResponse] = await Promise.all([
-                fetch(`${this.apiUrl}/estado`),
-                fetch(`${this.apiUrl}/total`)
-            ]);
+    async cargarTotalDisponible() {
+    try {
+        console.log('Cargando total disponible del cajero');
+        
+        const [estadoResponse, totalResponse] = await Promise.all([
+            fetch(`${this.apiUrl}/estado`),
+            fetch(`${this.apiUrl}/total`)
+        ]);
 
-            if (!estadoResponse.ok) throw new Error(`Error HTTP: ${estadoResponse.status}`);
-            if (!totalResponse.ok) throw new Error(`Error HTTP: ${totalResponse.status}`);
+        if (!estadoResponse.ok) throw new Error(`Error HTTP: ${estadoResponse.status}`);
+        if (!totalResponse.ok) throw new Error(`Error HTTP: ${totalResponse.status}`);
 
-            const estado = await estadoResponse.json();
-            const total = await totalResponse.json();
-
-            console.log('✅ Datos cargados:', estado.length, 'denominaciones');
-            this.actualizarInterfaz(estado, total);
-            
-        } catch (error) {
-            console.error('❌ Error cargando datos:', error);
-            this.mostrarError('No se pudo conectar con el servidor. Verifica que el backend esté ejecutándose.');
-        }
+        const estado = await estadoResponse.json();
+        const total = await totalResponse.json();
+        this.imprimirEstadoConsola(estado, total);
+        this.actualizarTotalDisponible(total);
+        
+    } catch (error) {
+        console.error('Error cargando total:', error);
+        this.mostrarError('No se pudo conectar con el servidor. Verifica que el backend esté ejecutándose.');
     }
+}
 
-    actualizarInterfaz(estado, total) {
-        // Actualizar totales
+imprimirEstadoConsola(estado, total) {
+    console.log('Divisas Restantes');
+    console.log('================================');
+    console.log(`Total disponible: $${total.toFixed(2)}`);
+    console.log('--------------------------------');
+    
+    estado.forEach(denom => {
+        const subtotal = denom.denominacion * denom.cantidad;
+        console.log(
+            `${denom.tipo} de $${denom.denominacion}: ${denom.cantidad} unidades | Subtotal: $${subtotal.toFixed(2)}`
+        );
+    });
+    
+    console.log('================================');
+}
+
+    actualizarTotalDisponible(total) {
+        // Solo actualizamos los elementos que aún existen
         document.getElementById('totalEfectivo').textContent = total.toFixed(2);
-        document.getElementById('totalDisplay').textContent = total.toFixed(2);
-        document.getElementById('totalFooter').textContent = total.toFixed(2);
         document.getElementById('montoMaximo').textContent = `$${total.toFixed(2)}`;
-
-        // Actualizar tabla
-        const tablaBody = document.getElementById('tablaEstado');
-        tablaBody.innerHTML = '';
-
-        estado.forEach(denom => {
-            const subtotal = denom.denominacion * denom.cantidad;
-            const fila = document.createElement('tr');
-            
-            if (denom.cantidad < 10) fila.className = 'table-warning';
-
-            fila.innerHTML = `
-                <td>
-                    <span class="badge ${denom.tipo === 'Billete' ? 'bg-primary' : 'bg-secondary'}">
-                        ${denom.tipo}
-                    </span>
-                </td>
-                <td class="fw-bold">$${denom.denominacion}</td>
-                <td>
-                    <span class="badge ${
-                        denom.cantidad >= 10 ? 'bg-success' : 
-                        denom.cantidad > 0 ? 'bg-warning' : 'bg-danger'
-                    }">
-                        ${denom.cantidad}
-                    </span>
-                </td>
-                <td class="fw-bold text-success">$${subtotal.toFixed(2)}</td>
-            `;
-            tablaBody.appendChild(fila);
-        });
     }
 
     async realizarRetiro() {
@@ -89,7 +69,6 @@ class CajeroApp {
         const monto = parseFloat(montoInput.value);
         const btnRetirar = document.getElementById('btnRetirar');
 
-        // Validaciones
         if (!monto || monto <= 0) {
             this.mostrarError('El monto debe ser mayor a cero');
             return;
@@ -106,13 +85,12 @@ class CajeroApp {
             return;
         }
 
-        // Loading state
         btnRetirar.disabled = true;
-        btnRetirar.textContent = '🔄 PROCESANDO...';
+        btnRetirar.textContent = 'PROCESANDO';
         document.body.classList.add('loading');
 
         try {
-            console.log(`💸 Solicitando retiro: $${monto}`);
+            console.log(`Solicitando retiro: $${monto}`);
             
             const response = await fetch(`${this.apiUrl}/retirar`, {
                 method: 'POST',
@@ -132,16 +110,15 @@ class CajeroApp {
 
             if (resultado.exito) {
                 montoInput.value = '';
-                // Recargar estado después de un retiro exitoso
-                setTimeout(() => this.cargarEstadoCajero(), 1000);
+                setTimeout(() => this.cargarTotalDisponible(), 1000);
             }
 
         } catch (error) {
-            console.error('❌ Error en retiro:', error);
+            console.error('Error en retiro:', error);
             this.mostrarError(error.message || 'Error al procesar la solicitud');
         } finally {
             btnRetirar.disabled = false;
-            btnRetirar.textContent = '💸 RETIRAR EFECTIVO';
+            btnRetirar.textContent = 'RETIRAR EFECTIVO';
             document.body.classList.remove('loading');
         }
     }
@@ -155,13 +132,12 @@ class CajeroApp {
         const montoRetirado = document.getElementById('montoRetirado');
 
         resultadoDiv.className = `alert ${resultado.exito ? 'alert-success' : 'alert-danger'} fade-in`;
-        titulo.textContent = resultado.exito ? '✅ ¡Retiro Exitoso!' : '❌ Error en el Retiro';
+        titulo.textContent = resultado.exito ? '¡Retiro Exitoso!' : 'Error en el Retiro';
         mensaje.textContent = resultado.mensaje;
 
         if (resultado.exito && resultado.denominacionesEntregadas) {
             denominacionesLista.innerHTML = '';
             
-            // Ordenar denominaciones de mayor a menor
             const denominaciones = Object.entries(resultado.denominacionesEntregadas)
                 .map(([denom, cant]) => ({ denominacion: parseFloat(denom), cantidad: cant }))
                 .sort((a, b) => b.denominacion - a.denominacion);
@@ -201,8 +177,7 @@ class CajeroApp {
     }
 }
 
-// Inicializar cuando se carga la página
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Aplicación cajero inicializada');
+    console.log('Aplicación cajero inicializada');
     new CajeroApp();
 });

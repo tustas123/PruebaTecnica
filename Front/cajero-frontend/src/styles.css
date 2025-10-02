@@ -14,6 +14,11 @@ body {
     min-height: 100vh;
 }
 
+main {
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
 .bank-header {
     background: linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
     border-bottom: 4px solid var(--accent-gold);
@@ -180,11 +185,42 @@ body {
 
 .info-card {
     background: white;
-    border-radius: 10px;
-    padding: 1.5rem;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 1rem;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .info-card {
+        padding: 1.25rem;
+        min-height: 100px;
+    }
+}
+
+.info-card h6 {
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+    color: #607d8b !important;
+}
+
+.info-card p {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .info-card p {
+        font-size: 1.3rem;
+    }
+}
+.info-card {
     border-top: 3px solid var(--accent-gold);
     height: 100%;
 }
@@ -229,7 +265,6 @@ body {
     }
 }
 
-/* Estilos para badges de cantidad */
 .badge-cantidad {
     font-size: 0.7rem;
     padding: 0.35em 0.65em;
@@ -241,7 +276,6 @@ body {
 .bg-primary { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)) !important; }
 .bg-secondary { background: linear-gradient(135deg, #6c757d, #5a6268) !important; }
 
-/* Responsive */
 @media (max-width: 768px) {
     .display-4 {
         font-size: 2rem;
@@ -293,10 +327,10 @@ body {
     }
 }
 
-/* Estilos para el footer */
 footer {
     background: var(--dark-blue) !important;
     margin-top: auto;
+    
 }
 
 footer h5 {
@@ -308,7 +342,6 @@ footer hr {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Mejoras para la tabla en móviles */
 @media (max-width: 768px) {
     .table-responsive {
         font-size: 0.8rem;

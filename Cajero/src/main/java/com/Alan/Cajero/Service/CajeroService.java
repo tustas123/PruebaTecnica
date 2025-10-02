@@ -19,33 +19,27 @@ public class CajeroService {
     public RetiroResponse procesarRetiro(Double monto) {
         try {
         	
-        	//monto minimo de retiro
             if (monto <= 0) {
                 return new RetiroResponse(false, "El monto debe ser mayor a cero");
             }
             
-            //monto maximo de retiro
             Double totalEfectivo = denominacionRepository.getTotalEfectivo();
             if (monto > totalEfectivo) {
                 return new RetiroResponse(false, "Fondos insuficientes en el cajero");
             }
           
             
-            //ordenar los billetes menor a mayor
             List<Denominacion> denominaciones = denominacionRepository.findAllByOrderByDenominacionDesc();
             Map<Double, Integer> denominacionesEntregadas = new LinkedHashMap<>();
             Double montoRestante = monto;
             
-            // billetes de cada tipo a entregar
             for (Denominacion denom : denominaciones) {
                 if (montoRestante <= 0) break;
                 
                 if (denom.getCantidad() > 0 && denom.getDenominacion() <= montoRestante) {
                 	
-                	//cuántos billetes de esta denominación se necesitan
                     int cantidadNecesaria = (int) (montoRestante / denom.getDenominacion());
                     
-                    //toma el mínimo entre lo necesario y lo disponible
                     int cantidadEntregar = Math.min(cantidadNecesaria, denom.getCantidad());
                     
                     if (cantidadEntregar > 0) {
@@ -56,12 +50,10 @@ public class CajeroService {
                 }
             }
             
-            // Validar si hay billetes suficientes para completar la cantidad del retiro
             if (montoRestante > 0) {
                 return new RetiroResponse(false, "No se puede entregar el monto exacto con las denominaciones disponibles");
             }
             
-            // Actualizar el inventario
             for (Map.Entry<Double, Integer> entry : denominacionesEntregadas.entrySet()) {
                 Double denominacion = entry.getKey();
                 Integer cantidadUsada = entry.getValue();
@@ -77,7 +69,6 @@ public class CajeroService {
                 }
             }
             
-            // Log del retiro
             System.out.println("=== RETIRO EXITOSO ===");
             System.out.println("Monto: $" + monto);
             System.out.println("Denominaciones entregadas:");
