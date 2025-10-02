@@ -1,0 +1,321 @@
+:root {
+    --primary-blue: #1a3a5f;
+    --secondary-blue: #2c5282;
+    --accent-gold: #d4af37;
+    --light-gold: #f7e7b2;
+    --success-green: #28a745;
+    --warning-orange: #fd7e14;
+    --dark-blue: #0f2a47;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    min-height: 100vh;
+}
+
+.bank-header {
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    border-bottom: 4px solid var(--accent-gold);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bank-logo {
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.bank-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background: white;
+}
+
+.bank-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.bank-card-header {
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    color: white;
+    border-bottom: 2px solid var(--accent-gold);
+    padding: 1rem 1.5rem;
+}
+
+.bank-card-body {
+    padding: 1.5rem;
+}
+
+.btn-bank-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-bank-primary:hover {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(42, 82, 132, 0.4);
+    color: white;
+}
+
+.btn-bank-success {
+    background: linear-gradient(135deg, var(--success-green) 0%, #20c374 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-bank-success:hover {
+    background: linear-gradient(135deg, #20c374 0%, var(--success-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+    color: white;
+}
+
+.form-control-bank {
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.form-control-bank:focus {
+    border-color: var(--secondary-blue);
+    box-shadow: 0 0 0 0.2rem rgba(44, 82, 130, 0.25);
+}
+
+.input-group-bank .input-group-text {
+    background: var(--light-gold);
+    border: 2px solid #e2e8f0;
+    border-right: none;
+    color: var(--primary-blue);
+    font-weight: 600;
+    border-radius: 8px 0 0 8px;
+}
+
+.denominacion-card {
+    background: linear-gradient(135deg, var(--light-gold) 0%, #f0e2a8 100%);
+    border: 1px solid var(--accent-gold);
+    border-radius: 8px;
+    color: var(--primary-blue);
+    transition: all 0.3s ease;
+    padding: 12px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.denominacion-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}
+
+.table-bank {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 0;
+}
+
+.table-bank thead {
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+    color: white;
+}
+
+.table-bank thead th {
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.table-bank tbody td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border-color: #e9ecef;
+}
+
+.table-bank tbody tr:hover {
+    background-color: rgba(212, 175, 55, 0.1);
+}
+
+.badge-bank {
+    font-size: 0.75rem;
+    padding: 0.4em 0.8em;
+    border-radius: 6px;
+}
+
+.alert-bank {
+    border: none;
+    border-radius: 10px;
+    border-left: 4px solid;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.alert-bank-success {
+    border-left-color: var(--success-green);
+    background: linear-gradient(135deg, #f0f9f4 0%, #e8f5e8 100%);
+    color: #155724;
+}
+
+.alert-bank-danger {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #fdf2f2 0%, #fce8e8 100%);
+    color: #721c24;
+}
+
+.info-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border-top: 3px solid var(--accent-gold);
+    height: 100%;
+}
+
+.info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.info-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-blue);
+}
+
+.total-badge {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #e6c158 100%);
+    color: var(--primary-blue);
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(-10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Estilos para badges de cantidad */
+.badge-cantidad {
+    font-size: 0.7rem;
+    padding: 0.35em 0.65em;
+}
+
+.bg-success { background: linear-gradient(135deg, #28a745, #20c374) !important; }
+.bg-warning { background: linear-gradient(135deg, #ffc107, #fd7e14) !important; }
+.bg-danger { background: linear-gradient(135deg, #dc3545, #c82333) !important; }
+.bg-primary { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)) !important; }
+.bg-secondary { background: linear-gradient(135deg, #6c757d, #5a6268) !important; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .bank-card-body {
+        padding: 1rem;
+    }
+    
+    .bank-card-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .info-card {
+        padding: 1rem;
+    }
+    
+    .info-icon {
+        font-size: 2rem;
+    }
+    
+    .table-bank thead th {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .table-bank tbody td {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .bank-header .h3 {
+        font-size: 1.25rem;
+    }
+    
+    .bank-logo {
+        font-size: 2rem;
+    }
+    
+    .btn-bank-success {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .form-control-bank {
+        padding: 0.6rem 0.75rem;
+    }
+}
+
+/* Estilos para el footer */
+footer {
+    background: var(--dark-blue) !important;
+    margin-top: auto;
+}
+
+footer h5 {
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+footer hr {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mejoras para la tabla en móviles */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+    
+    .denominacion-card {
+        padding: 8px;
+        margin-bottom: 5px;
+    }
+}
